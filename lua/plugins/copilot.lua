@@ -2,25 +2,43 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter", -- Only loads Copilot when you start typing to keep Neovim fast
+    event = "InsertEnter",
     config = function()
+      -- Detect environment
+      local is_termux = vim.fn.getenv("TERMUX_VERSION") ~= vim.NIL
+      
+      -- Define paths dynamically
+      local node_path = is_termux and "/data/data/com.termux/files/usr/bin/node" or "node"
+      local server_cmd = nil
+      
+      if is_termux then
+        server_cmd = {
+          node_path,
+          "/data/data/com.termux/files/usr/lib/node_modules/@github/copilot-language-server/dist/language-server.js",
+        }
+      end
+
       require("copilot").setup({
+        copilot_node_command = node_path,
+        server_opts_overrides = {
+          cmd = server_cmd,
+        },
         panel = {
           enabled = true,
           auto_refresh = true,
           keymap = {
-            open = "<M-CR>", -- Alt + Enter to open the Copilot suggestions panel
+            open = "<M-CR>",
           },
         },
         suggestion = {
           enabled = true,
-          auto_trigger = true, -- Automatically show suggestions as ghost text while typing
+          auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = "<Tab>", -- Press Tab to accept the AI suggestion
-            next = "<M-]>>",  -- Alt + ] to cycle to the next suggestion
-            prev = "<M-[>",   -- Alt + [ to cycle to the previous suggestion
-            dismiss = "<C-]>",-- Ctrl + ] to dismiss the ghost text
+            accept = "<Tab>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
           },
         },
         filetypes = {
@@ -33,7 +51,6 @@ return {
           svn = false,
           cvs = false,
           ["."] = false,
-          -- Ensure it is explicitly enabled for your Laravel files:
           php = true,
           blade = true,
           javascript = true,
