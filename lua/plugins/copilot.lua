@@ -15,6 +15,7 @@ return {
         server_cmd = {
           node_path,
           "/data/data/com.termux/files/usr/lib/node_modules/@github/copilot-language-server/dist/language-server.js",
+          "--stdio",
         }
       end
 
@@ -35,7 +36,7 @@ return {
           auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = "<Tab>",
+            accept = "<M-l>",
             next = "<M-]>",
             prev = "<M-[>",
             dismiss = "<C-]>",

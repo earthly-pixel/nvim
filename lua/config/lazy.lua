@@ -23,12 +23,12 @@ require("lazy").setup({
 }, {
   git = {
     -- 1. Give it 5 minutes (300 seconds) instead of the default short timeout
-    timeout = 300, 
+    timeout = 600, 
     
     -- 2. Prevent lazy from trying to pull unnecessary git history details 
     -- that slow down disk write performance on emulated storage
-    clone_error_timeout = 300,
+   -- clone_error_timeout = 300,
   },
   -- Optional: If you want to speed up overall performance on this device
-  concurrency = 2, -- Lower simultaneous downloads so your CPU doesn't choke
+ -- concurrency = 2, -- Lower simultaneous downloads so your CPU doesn't choke
 })

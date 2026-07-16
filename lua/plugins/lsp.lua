@@ -10,7 +10,7 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         -- Automates installation of PHP, HTML, CSS, and Tailwind servers
-        ensure_installed = { "intelephense", "html", "cssls", "tailwindcss", "lua_ls" }
+        ensure_installed = { "intelephense", "html", "cssls", "tailwindcss" }
       })
     end
   },
@@ -30,7 +30,28 @@ return {
       lspconfig.intelephense.setup({ capabilities = capabilities })
       lspconfig.html.setup({ capabilities = capabilities })
       lspconfig.tailwindcss.setup({ capabilities = capabilities })
-      lspconfig.lua_ls.setup({ capabilities = capabilities })
+      lspconfig.cssls.setup({ capabilities = capabilities})
+
+      lspconfig.lua_ls.setup({ 
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            runtime = {
+              version = "LuaJIT",
+            },
+            diagnostics = {
+              globals = { "vim" },
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      })
 
       -- Keymaps for code navigation
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
